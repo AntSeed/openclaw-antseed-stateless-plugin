@@ -30,11 +30,25 @@ function forgetStatelessRun(event = {}) {
   if (event.runId) statelessRunIds.delete(event.runId);
 }
 
+function isStatelessAntSeedMessage(message = {}) {
+  return isStatelessEnabled()
+    && message.provider === PROVIDER_ID
+    && (message.api === RESPONSES_API || message.modelApi === RESPONSES_API || message.model?.api === RESPONSES_API);
+}
+
+function hasResponsesItemHandle(value) {
+  return typeof value === "string" && /\|(rs|msg|fc)_[A-Za-z0-9_-]+$/.test(value);
+}
+
 function shouldSanitizeWrite(event = {}, ctx = {}) {
   if (!isStatelessEnabled()) return false;
+  if (isStatelessAntSeedMessage(event.message)) return true;
   const sessionKey = event.sessionKey || ctx.sessionKey;
   if (sessionKey && statelessSessionKeys.has(sessionKey)) return true;
-  return event.runId && statelessRunIds.has(event.runId);
+  if (event.runId && statelessRunIds.has(event.runId)) return true;
+  return hasResponsesItemHandle(event.toolCallId)
+    || hasResponsesItemHandle(event.message?.toolCallId)
+    || hasResponsesItemHandle(event.message?.toolUseId);
 }
 
 function stripResponsesReplaySignatureFields(block) {
@@ -52,7 +66,7 @@ function stripResponsesReplaySignatureFields(block) {
 function stripResponsesItemIdFromToolCallId(value) {
   if (typeof value !== "string") return value;
   const [callId, itemId] = value.split("|", 2);
-  return itemId ? callId : value;
+  return itemId && /^(rs|msg|fc)_[A-Za-z0-9_-]+$/.test(itemId) ? callId : value;
 }
 
 function sanitizeAssistantContent(content) {
