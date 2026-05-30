@@ -1,0 +1,15 @@
+{
+  "id": "antseed-stateless",
+  "name": "AntSeed Stateless Responses",
+  "description": "AntSeed provider replay policy for stateless OpenAI Responses transport.",
+  "activation": {
+    "onStartup": false,
+    "onProviders": ["antseed"]
+  },
+  "providers": ["antseed"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "openclaw-antseed-stateless-plugin",
+  "version": "0.1.0",
+  "description": "OpenClaw provider replay policy for AntSeed stateless OpenAI Responses routes.",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "openclaw": {
+    "extensions": ["./index.js"],
+    "compat": {
+      "pluginApi": ">=2026.5.4",
+      "minGatewayVersion": "2026.5.4"
+    }
+  },
+  "scripts": {
+    "check": "node --check index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
