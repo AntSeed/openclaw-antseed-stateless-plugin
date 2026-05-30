@@ -10,9 +10,9 @@ npm run check
 
 Keep changes dependency-free unless there is a clear need for a runtime dependency.
 
-## Public-safety rules
+## Repository hygiene
 
-This repository is intended to become public. Do not commit:
+Do not commit:
 
 - API keys, private keys, tokens, or auth files
 - Kubernetes manifests, production config, or operational session files

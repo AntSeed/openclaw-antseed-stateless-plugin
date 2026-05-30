@@ -60,7 +60,3 @@ npm run check
 ```
 
 No dependencies are required.
-
-## Publication status
-
-This repository is safe to make public when ready: it contains no deployment configuration, secrets, private peer IDs, customer data, or operational session state. The package remains marked `"private": true` to prevent accidental npm publication until an explicit package release path is chosen.
