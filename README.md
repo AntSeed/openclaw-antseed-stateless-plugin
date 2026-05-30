@@ -1,6 +1,6 @@
 # OpenClaw AntSeed Stateless Plugin
 
-Private OpenClaw plugin for AntSeed's OpenAI Responses-compatible provider route.
+OpenClaw plugin for AntSeed's OpenAI Responses-compatible provider route.
 
 The plugin keeps OpenClaw on native `/v1/responses` while treating AntSeed history as stateless. It prevents provider-specific Responses item handles from being persisted into replayed conversation history unless AntSeed explicitly supports replaying those handles end-to-end.
 
@@ -60,3 +60,7 @@ npm run check
 ```
 
 No dependencies are required.
+
+## Publication status
+
+This repository is safe to make public when ready: it contains no deployment configuration, secrets, private peer IDs, customer data, or operational session state. The package remains marked `"private": true` to prevent accidental npm publication until an explicit package release path is chosen.

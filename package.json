@@ -4,7 +4,7 @@
   "description": "OpenClaw provider replay policy for AntSeed stateless OpenAI Responses routes.",
   "type": "module",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "openclaw": {
     "extensions": ["./index.js"],
     "compat": {
