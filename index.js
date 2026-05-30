@@ -123,6 +123,21 @@ function sanitizeReplayMessages(messages) {
   return touched ? sanitized : messages;
 }
 
+function sanitizeMessagesInPlace(messages) {
+  if (!Array.isArray(messages)) return false;
+  const sanitized = sanitizeReplayMessages(messages);
+  if (sanitized === messages) return false;
+  messages.splice(0, messages.length, ...sanitized);
+  return true;
+}
+
+function sanitizeStreamContext(context) {
+  if (!context || typeof context !== "object" || !Array.isArray(context.messages)) return context;
+  const sanitizedMessages = sanitizeReplayMessages(context.messages);
+  if (sanitizedMessages === context.messages) return context;
+  return { ...context, messages: sanitizedMessages };
+}
+
 export default {
   id: "antseed-stateless",
   name: "AntSeed Stateless Responses",
@@ -153,6 +168,11 @@ export default {
         if (!isStatelessAntSeedResponses(ctx)) return null;
         return sanitizeReplayMessages(ctx.messages || []);
       },
+      wrapStreamFn(ctx) {
+        if (!isStatelessAntSeedResponses(ctx) || typeof ctx.streamFn !== "function") return null;
+        const inner = ctx.streamFn;
+        return (model, context, options) => inner(model, sanitizeStreamContext(context), options);
+      },
     });
 
     api.on("model_call_started", (event) => {
@@ -161,6 +181,11 @@ export default {
 
     api.on("model_call_ended", (event) => {
       forgetStatelessRun(event);
+    });
+
+    api.on("llm_input", (event) => {
+      if (!isAntSeedProviderEvent(event)) return;
+      sanitizeMessagesInPlace(event.historyMessages);
     });
 
     api.on("tool_result_persist", (event, ctx) => {

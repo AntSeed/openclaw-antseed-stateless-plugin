@@ -13,6 +13,8 @@ For `provider === "antseed"` and `modelApi/api === "openai-responses"`, the plug
 - removes `textSignature`, `thinkingSignature`, `thought_signature`, and `signature` fields
 - removes Responses item-id suffixes from tool call/result IDs formatted as `call_id|item_id`
 - sanitizes replay history and final replay turns
+- wraps the provider stream function so same-turn tool continuations are sanitized before `/v1/responses`
+- sanitizes the `llm_input` history array in-place as a secondary in-memory guard
 - sanitizes assistant/tool-result messages before session JSONL writes
 
 The behavior is enabled by default and can be disabled with:
@@ -51,7 +53,7 @@ Expected runtime shape:
 - `status: "loaded"`
 - `activated: true`
 - `providerIds` includes `antseed`
-- `hookCount` includes the four session/write lifecycle hooks
+- `hookCount` includes the five session/write lifecycle hooks
 
 ## Development
 

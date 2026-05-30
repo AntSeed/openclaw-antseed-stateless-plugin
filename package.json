@@ -13,7 +13,8 @@
     }
   },
   "scripts": {
-    "check": "node --check index.js"
+    "check": "node --check index.js && node --test",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=22"
