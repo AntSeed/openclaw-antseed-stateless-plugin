@@ -16,8 +16,12 @@ function isStatelessAntSeedResponses(ctx = {}) {
 const statelessSessionKeys = new Set();
 const statelessRunIds = new Set();
 
+function isAntSeedProviderEvent(event = {}) {
+  return isStatelessEnabled(event.env || process.env) && event.provider === PROVIDER_ID;
+}
+
 function rememberStatelessCall(event = {}) {
-  if (!isStatelessAntSeedResponses(event)) return;
+  if (!isAntSeedProviderEvent(event)) return;
   if (event.sessionKey) statelessSessionKeys.add(event.sessionKey);
   if (event.runId) statelessRunIds.add(event.runId);
 }
